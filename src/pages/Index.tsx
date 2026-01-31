@@ -1,67 +1,90 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import NightStreetScene from "@/components/NightStreetScene";
-import BirthdayHeader from "@/components/BirthdayHeader";
-import F1CarReveal from "@/components/F1CarReveal";
-import RideQuestion from "@/components/RideQuestion";
+import f1CarImage from "@/assets/f1-car-night.jpg";
+import CarExteriorScene from "@/components/CarExteriorScene";
+import CarInteriorScene from "@/components/CarInteriorScene";
 import ConfettiCelebration from "@/components/ConfettiCelebration";
 
+type Scene = "exterior" | "interior";
+
 const Index = () => {
-  const [sceneReady, setSceneReady] = useState(false);
+  const [currentScene, setCurrentScene] = useState<Scene>("exterior");
   const [showConfetti, setShowConfetti] = useState(false);
 
-  useEffect(() => {
-    // Start the reveal sequence
-    const timer = setTimeout(() => {
-      setSceneReady(true);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleRideAccept = () => {
+  const handleAcceptRide = () => {
     setShowConfetti(true);
-    // Hide confetti after celebration
-    setTimeout(() => setShowConfetti(false), 8000);
+    setTimeout(() => {
+      setCurrentScene("interior");
+      setTimeout(() => setShowConfetti(false), 3000);
+    }, 1500);
   };
 
   return (
-    <NightStreetScene>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Full background F1 car image */}
+      <motion.div 
+        className="fixed inset-0 z-0"
+        initial={{ scale: 1.1 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+      >
+        <img
+          src={f1CarImage}
+          alt="Red F1 Sports Car on Night Streets"
+          className="w-full h-full object-cover"
+        />
+        {/* Ambient glow overlay */}
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-background/20 to-background/60" />
+      </motion.div>
+
+      {/* Stars overlay */}
+      <div className="fixed inset-0 z-5 pointer-events-none overflow-hidden">
+        {Array.from({ length: 30 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 rounded-full bg-foreground/40"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 30}%`,
+            }}
+            animate={{ opacity: [0.2, 0.8, 0.2] }}
+            transition={{
+              duration: 2 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Confetti */}
       <AnimatePresence>
         {showConfetti && <ConfettiCelebration />}
       </AnimatePresence>
 
-      <div className="min-h-screen flex flex-col">
-        {/* Header section */}
-        <BirthdayHeader isVisible={sceneReady} />
+      {/* Scenes */}
+      <AnimatePresence mode="wait">
+        {currentScene === "exterior" && (
+          <CarExteriorScene onAcceptRide={handleAcceptRide} />
+        )}
+      </AnimatePresence>
 
-        {/* Main content */}
-        <motion.main
-          className="flex-1 flex flex-col items-center justify-center px-4 py-8 md:py-12"
-          initial={{ opacity: 0 }}
-          animate={sceneReady ? { opacity: 1 } : {}}
-          transition={{ duration: 1, delay: 0.5 }}
-        >
-          {/* The F1 Car Reveal */}
-          <F1CarReveal isVisible={sceneReady} />
+      <CarInteriorScene isVisible={currentScene === "interior"} />
 
-          {/* The Question */}
-          <RideQuestion isVisible={sceneReady} onAccept={handleRideAccept} />
-        </motion.main>
-
-        {/* Footer */}
+      {/* Footer - only show on exterior */}
+      {currentScene === "exterior" && (
         <motion.footer
-          className="text-center py-6 text-muted-foreground font-body text-sm"
+          className="fixed bottom-4 left-0 right-0 text-center z-20"
           initial={{ opacity: 0 }}
-          animate={sceneReady ? { opacity: 1 } : {}}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 2 }}
         >
-          <p className="flex items-center justify-center gap-2">
-            Made with <span className="text-primary animate-pulse">❤️</span> for your special day
+          <p className="font-body text-sm text-muted-foreground/60">
+            Made with <span className="text-primary">❤️</span> for your special day
           </p>
         </motion.footer>
-      </div>
-    </NightStreetScene>
+      )}
+    </div>
   );
 };
 
