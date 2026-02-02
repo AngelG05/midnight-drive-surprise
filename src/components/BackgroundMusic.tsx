@@ -48,6 +48,7 @@ const BackgroundMusic = ({ isPlaying }: BackgroundMusicProps) => {
 
   return (
     <>
+      {/* Audio element - user should upload music to /public/music/background.mp3 */}
       <audio
         ref={audioRef}
         loop
