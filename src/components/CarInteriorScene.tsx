@@ -56,8 +56,8 @@ const CarInteriorScene = ({ isVisible }: CarInteriorSceneProps) => {
           alt="Inside the Ferrari"
           className="w-full h-full object-cover"
         />
-        {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-background/70" />
+        {/* Subtle overlay for text readability */}
+        <div className="absolute inset-0 bg-background/50" />
       </div>
 
       {/* Content */}
@@ -86,9 +86,9 @@ const CarInteriorScene = ({ isVisible }: CarInteriorSceneProps) => {
 
             <motion.button
               onClick={handleClaimFlowers}
-              className="font-display text-xl md:text-2xl text-foreground px-8 py-4 border-2 border-foreground/50 rounded-full hover:bg-foreground/10 transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="font-display text-lg md:text-xl text-foreground/90 px-6 py-3 border border-foreground/30 rounded-full hover:border-foreground/60 hover:text-foreground transition-all duration-500"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               Take a look
             </motion.button>
@@ -177,12 +177,12 @@ const CarInteriorScene = ({ isVisible }: CarInteriorSceneProps) => {
 
             <motion.button
               onClick={handleAcceptFlowers}
-              className="font-display text-xl md:text-2xl text-foreground px-8 py-4 border-2 border-foreground/50 rounded-full hover:bg-foreground/10 transition-all duration-300"
+              className="font-display text-lg md:text-xl text-foreground/90 px-6 py-3 border border-foreground/30 rounded-full hover:border-foreground/60 hover:text-foreground transition-all duration-500"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               Accept with love ❤️
             </motion.button>
