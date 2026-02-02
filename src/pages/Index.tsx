@@ -4,14 +4,17 @@ import f1CarImage from "@/assets/f1-car-night.jpg";
 import CarExteriorScene from "@/components/CarExteriorScene";
 import CarInteriorScene from "@/components/CarInteriorScene";
 import ConfettiCelebration from "@/components/ConfettiCelebration";
+import BackgroundMusic from "@/components/BackgroundMusic";
 
 type Scene = "exterior" | "interior";
 
 const Index = () => {
   const [currentScene, setCurrentScene] = useState<Scene>("exterior");
   const [showConfetti, setShowConfetti] = useState(false);
+  const [musicStarted, setMusicStarted] = useState(false);
 
   const handleAcceptRide = () => {
+    setMusicStarted(true);
     setShowConfetti(true);
     setTimeout(() => {
       setCurrentScene("interior");
@@ -68,6 +71,9 @@ const Index = () => {
       </AnimatePresence>
 
       <CarInteriorScene isVisible={currentScene === "interior"} />
+
+      {/* Background Music */}
+      <BackgroundMusic isPlaying={musicStarted} />
 
       {/* Footer - only show on exterior */}
       {currentScene === "exterior" && (
