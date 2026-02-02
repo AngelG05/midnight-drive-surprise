@@ -31,8 +31,8 @@ const CarExteriorScene = ({ onAcceptRide }: CarExteriorSceneProps) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
     >
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/70 to-background/80 pointer-events-none" />
+      {/* Subtle overlay for text readability - minimal like original */}
+      <div className="absolute inset-0 bg-background/40 pointer-events-none" />
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-3xl mx-auto">
@@ -63,15 +63,15 @@ const CarExteriorScene = ({ onAcceptRide }: CarExteriorSceneProps) => {
           Do you mind a ride?
         </motion.p>
 
-        {/* CTA Button - simple elegant style */}
+        {/* CTA Button - elegant minimal style like original */}
         <motion.button
           onClick={onAcceptRide}
-          className="font-display text-2xl md:text-3xl text-foreground px-10 py-4 border-2 border-foreground/50 rounded-full hover:bg-foreground/10 transition-all duration-300"
+          className="font-display text-xl md:text-2xl text-foreground/90 px-8 py-3 border border-foreground/30 rounded-full hover:border-foreground/60 hover:text-foreground transition-all duration-500"
           initial={{ opacity: 0 }}
           animate={{ opacity: showButton ? 1 : 0 }}
-          transition={{ duration: 1 }}
-          whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.8)" }}
-          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 1.5 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           Yes, let's go!
         </motion.button>

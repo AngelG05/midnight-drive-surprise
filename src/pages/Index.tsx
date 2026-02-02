@@ -33,8 +33,6 @@ const Index = () => {
           alt="Red F1 Sports Car on Night Streets"
           className="w-full h-full object-cover"
         />
-        {/* Ambient glow overlay */}
-        <div className="absolute inset-0 bg-gradient-radial from-transparent via-background/20 to-background/60" />
       </motion.div>
 
       {/* Stars overlay */}
