@@ -3,12 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import f1CarImage from "@/assets/f1-car-night.jpg";
 import DarkRoom from "@/components/DarkRoom";
 import EmptyRoom from "@/components/EmptyRoom";
+import Hallway from "@/components/Hallway";
 import CarExteriorScene from "@/components/CarExteriorScene";
 import CarInteriorScene from "@/components/CarInteriorScene";
 import ConfettiCelebration from "@/components/ConfettiCelebration";
 import BackgroundMusic from "@/components/BackgroundMusic";
 
-type Scene = "dark" | "empty" | "exterior" | "interior";
+// Flow: dark → empty → hallway → exterior → interior
+type Scene = "dark" | "empty" | "hallway" | "exterior" | "interior";
 
 const Index = () => {
   const [currentScene, setCurrentScene] = useState<Scene>("dark");
@@ -16,17 +18,25 @@ const Index = () => {
   const [musicStarted, setMusicStarted] = useState(false);
   const [showF1Background, setShowF1Background] = useState(false);
 
+  // Dark room → Empty room (lights on)
   const handleLightsOn = () => {
     setCurrentScene("empty");
   };
 
+  // Empty room → Hallway (go outside)
   const handleMoveOutside = () => {
+    setCurrentScene("hallway");
+  };
+
+  // Hallway → Car exterior (go back inside leads to surprise)
+  const handleGoBackInside = () => {
     setShowF1Background(true);
     setTimeout(() => {
       setCurrentScene("exterior");
     }, 500);
   };
 
+  // Car exterior → Car interior (accept ride)
   const handleAcceptRide = () => {
     setMusicStarted(true);
     setShowConfetti(true);
@@ -38,7 +48,7 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
-      {/* Full background F1 car image - only show after moving outside */}
+      {/* Full background F1 car image - only show after going back inside from hallway */}
       <AnimatePresence>
         {showF1Background && (
           <motion.div 
@@ -90,6 +100,9 @@ const Index = () => {
         )}
         {currentScene === "empty" && (
           <EmptyRoom onMoveOutside={handleMoveOutside} />
+        )}
+        {currentScene === "hallway" && (
+          <Hallway onGoBackInside={handleGoBackInside} />
         )}
         {currentScene === "exterior" && (
           <CarExteriorScene onAcceptRide={handleAcceptRide} />

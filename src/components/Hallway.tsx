@@ -1,19 +1,20 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { DoorOpen } from "lucide-react";
+import { DoorClosed } from "lucide-react";
 
-interface EmptyRoomProps {
-  onMoveOutside: () => void;
+interface HallwayProps {
+  onGoBackInside: () => void;
 }
 
-const EmptyRoom = ({ onMoveOutside }: EmptyRoomProps) => {
+const Hallway = ({ onGoBackInside }: HallwayProps) => {
   const [currentMessage, setCurrentMessage] = useState(-1);
   const [showButton, setShowButton] = useState(false);
 
   const messages = [
-    "Ok! Why is it so empty here?",
-    "You know what, let's move outside.",
-    "Let's see if anyone's over there..."
+    "Hey!",
+    "Maybe it's a bit late to move in the hallway,",
+    "Things are creepy here...",
+    "I think we should go back inside."
   ];
 
   useEffect(() => {
@@ -45,21 +46,44 @@ const EmptyRoom = ({ onMoveOutside }: EmptyRoomProps) => {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
     >
-      {/* Room background with radial gradient overlay */}
+      {/* Hallway background - dark and creepy */}
       <div 
         className="absolute inset-0"
         style={{
-          background: "radial-gradient(transparent, rgba(0, 0, 0, 0.65)), linear-gradient(135deg, hsl(220 40% 15%) 0%, hsl(222 47% 8%) 50%, hsl(220 45% 12%) 100%)",
+          background: "radial-gradient(transparent, #000), linear-gradient(180deg, hsl(220 30% 8%) 0%, hsl(222 40% 5%) 50%, hsl(220 35% 3%) 100%)",
           backgroundSize: "cover",
-          backgroundPosition: "70%"
+          backgroundPosition: "center"
         }}
       />
+
+      {/* Spooky ambient particles */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 rounded-full bg-foreground/10"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{ 
+              opacity: [0.1, 0.3, 0.1],
+              y: [0, -20, 0]
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 w-full max-w-4xl">
@@ -79,9 +103,9 @@ const EmptyRoom = ({ onMoveOutside }: EmptyRoomProps) => {
           </motion.p>
         ))}
 
-        {/* Door Button */}
+        {/* Door Button - to go back inside */}
         <motion.button
-          onClick={onMoveOutside}
+          onClick={onGoBackInside}
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group"
           initial={{ opacity: 0 }}
           animate={{ opacity: showButton ? 1 : 0 }}
@@ -90,7 +114,7 @@ const EmptyRoom = ({ onMoveOutside }: EmptyRoomProps) => {
           whileTap={{ scale: 0.95 }}
         >
           {/* Door icon */}
-          <DoorOpen 
+          <DoorClosed 
             className="w-16 h-16 md:w-20 md:h-20 text-foreground/60 group-hover:text-foreground transition-colors duration-300"
             strokeWidth={1.5}
           />
@@ -103,11 +127,11 @@ const EmptyRoom = ({ onMoveOutside }: EmptyRoomProps) => {
           animate={{ opacity: showButton ? 1 : 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          Click the Door
+          Click to go back inside
         </motion.p>
       </div>
     </motion.div>
   );
 };
 
-export default EmptyRoom;
+export default Hallway;
